@@ -27,6 +27,8 @@ public class SQLDriver {
 			server = DriverManager.getConnection("jdbc:mysql://"+IP+":"+port+"/"+table+"?autoReconnect=true&useSSL=false",username, password);
 			DatabaseMetaData DBmeta = server.getMetaData();
 			
+			TableNames.clear();		
+			
 			ResultSet tables = DBmeta.getTables(server.getCatalog(), null, "%", null);			
 			
 			while (tables.next()){

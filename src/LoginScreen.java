@@ -3,7 +3,7 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class LoginScreen extends Screen {
+public class LoginScreen extends Screen {	
 	private JLabel Label_Prompt;
 	private JLabel Label_Server;
 	private JLabel Label_IP;
@@ -131,6 +131,9 @@ public class LoginScreen extends Screen {
 			
 			else if (SQLDriver.connect(IP, Port, DB, Username, Password)){
 				JOptionPane.showOptionDialog(null, "Connection successful.", "Message", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+				if (null != TableScreen.CurrentTableScreen){
+					TableScreen.CurrentTableScreen.close();
+				}
 				new TableScreen(IP, DB);
 				close();
 			}

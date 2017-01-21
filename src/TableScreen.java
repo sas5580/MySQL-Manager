@@ -4,8 +4,9 @@ import javax.swing.*;
 
 
 public class TableScreen extends Screen{
+	public static TableScreen CurrentTableScreen = null;
 	
-	public String curTable = null;
+	public static String curTable = null;
 	
 	private JScrollPane scroll;
 	
@@ -15,12 +16,21 @@ public class TableScreen extends Screen{
 	private JLabel Label_DBName;
 	private JLabel Label_Table;
 	
+	private JButton Button_Reconnect;
+	
 	private JComboBox<String> Select_Table;
 	
 	private JTable Table;
 	
-	public TableScreen(String IP, String TableName){
+	public TableScreen(String IP, String TableName){		
 		super("Table", 720, 480);
+		
+		if (null != CurrentTableScreen){
+			CurrentTableScreen.close();
+		}
+		CurrentTableScreen = this;
+		
+		setJMenuBar(new MenuBar());
 		
 		Label_Server = new JLabel("Database IP :");
 		Label_Server.setBounds(10, 10, 80, 25);
@@ -42,16 +52,17 @@ public class TableScreen extends Screen{
 		Label_Table.setBounds(10, 70, 80, 25);
 		panel.add(Label_Table);
 		
-		scroll = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);		
+		scroll = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);		
 		scroll.setBounds(0,120,700,200);
 		add(scroll);
 		
 		Select_Table = new JComboBox<String>(SQLDriver.TableNames);
 		Select_Table.addActionListener(new ActionListener (){
 			public void actionPerformed(ActionEvent e){
-				curTable = String.valueOf(Select_Table.getSelectedItem());
-				SQLDriver.UpdateCurTable(curTable);				
-				generateTable();
+				if (String.valueOf(Select_Table.getSelectedItem()) != curTable){
+					curTable = String.valueOf(Select_Table.getSelectedItem());
+					refreshTable(curTable);
+				}				
 			}
 		});
 		Select_Table.setSelectedIndex(0);
@@ -61,7 +72,12 @@ public class TableScreen extends Screen{
 		open();
 	}
 	
-	private void generateTable(){
+	public void refreshTable(String tableName){
+		SQLDriver.UpdateCurTable(tableName);				
+		generateTable();
+	}
+	
+	public void generateTable(){
 		if (null != scroll && scroll.isDisplayable()){
 			scroll.getViewport().remove(Table);
 		}
@@ -74,9 +90,10 @@ public class TableScreen extends Screen{
 		
 		Table.setPreferredScrollableViewportSize(new Dimension(700, 200));
 		Table.setFillsViewportHeight(true);
-		Table.getColumnModel().getColumn(0).setMaxWidth(40);
 		if (SQLDriver.curTableCols.size()>9) Table.setAutoResizeMode( JTable.AUTO_RESIZE_OFF );
 		
 		scroll.getViewport().add(Table);
 	}
+	
+	
 }
