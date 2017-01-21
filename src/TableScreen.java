@@ -8,6 +8,7 @@ public class TableScreen extends Screen{
 	
 	public static String curTable = null;
 	
+	private JScrollPane Scroll_Query;
 	private JScrollPane scroll;
 	
 	private JLabel Label_Server;
@@ -15,9 +16,12 @@ public class TableScreen extends Screen{
 	private JLabel Label_IP;
 	private JLabel Label_DBName;
 	private JLabel Label_Table;
+	private JLabel Label_Query;
 	
-	private JButton Button_Reconnect;
+	private JTextArea Field_Query;
 	
+	private JButton Button_Query;
+		
 	private JComboBox<String> Select_Table;
 	
 	private JTable Table;
@@ -52,6 +56,22 @@ public class TableScreen extends Screen{
 		Label_Table.setBounds(10, 70, 80, 25);
 		panel.add(Label_Table);
 		
+		Label_Query = new JLabel("Enter query :");
+		Label_Query.setBounds(340, 40, 80, 25);
+		panel.add(Label_Query);		
+		
+		Field_Query = new JTextArea();
+		Field_Query.setLineWrap(true);
+		Field_Query.setWrapStyleWord(true);
+		
+		Scroll_Query = new JScrollPane(Field_Query, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		Scroll_Query.setBounds(420, 10, 200, 85);
+		panel.add(Scroll_Query);
+		
+		Button_Query = new JButton("Go");
+		Button_Query.setBounds(630, 40, 50, 25);
+		panel.add(Button_Query);		
+		
 		scroll = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);		
 		scroll.setBounds(0,120,700,200);
 		add(scroll);
@@ -73,7 +93,7 @@ public class TableScreen extends Screen{
 	}
 	
 	public void refreshTable(String tableName){
-		SQLDriver.UpdateCurTable(tableName);				
+		SQLDriver.Query("SELECT * FROM "+tableName);				
 		generateTable();
 	}
 	
