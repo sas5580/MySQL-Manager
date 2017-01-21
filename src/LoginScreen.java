@@ -28,6 +28,10 @@ public class LoginScreen extends Screen {
 	public LoginScreen(){
 		super("Connect to DB", 350, 400);
 		
+		if (null != TableScreen.CurrentTableScreen){
+			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		}
+		
 		Label_Prompt = new JLabel("Please enter fields below to acess the database.");
 		Label_Prompt.setBounds(10, 10, 640, 25);
 		panel.add(Label_Prompt);

@@ -37,23 +37,23 @@ public class TableScreen extends Screen{
 		setJMenuBar(new MenuBar());
 		
 		Label_Server = new JLabel("Database IP :");
-		Label_Server.setBounds(10, 10, 80, 25);
+		Label_Server.setBounds(10, 10, 102, 25);
 		panel.add(Label_Server);
 		
 		Label_IP = new JLabel(IP);
-		Label_IP.setBounds(120, 10, 80, 25);
+		Label_IP.setBounds(140, 10, 80, 25);
 		panel.add(Label_IP);
 		
 		Label_DB = new JLabel("Schema :");
-		Label_DB.setBounds(10, 40, 80, 25);
+		Label_DB.setBounds(10, 40, 120, 25);
 		panel.add(Label_DB);
 		
 		Label_DBName = new JLabel(TableName);
-		Label_DBName.setBounds(120, 40, 80, 25);
+		Label_DBName.setBounds(140, 40, 80, 25);
 		panel.add(Label_DBName);
 		
-		Label_Table = new JLabel("Table :");
-		Label_Table.setBounds(10, 70, 80, 25);
+		Label_Table = new JLabel("Quick Table View :");
+		Label_Table.setBounds(10, 70, 120, 25);
 		panel.add(Label_Table);
 		
 		Label_Query = new JLabel("Enter query :");
@@ -70,6 +70,18 @@ public class TableScreen extends Screen{
 		
 		Button_Query = new JButton("Go");
 		Button_Query.setBounds(630, 40, 50, 25);
+		Button_Query.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				boolean res = SQLDriver.Query(Field_Query.getText());
+				if (res){
+					Field_Query.setText("");
+					generateTable();
+				}
+				else{
+					JOptionPane.showMessageDialog(null,"Either the statement you entered is invalid, or you do not have permission\nto run the statement. Please change the statement and try again.", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
 		panel.add(Button_Query);		
 		
 		scroll = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);		
@@ -86,7 +98,7 @@ public class TableScreen extends Screen{
 			}
 		});
 		Select_Table.setSelectedIndex(0);
-		Select_Table.setBounds(120, 70, 150, 25);
+		Select_Table.setBounds(140, 70, 150, 25);
 		panel.add(Select_Table);
 		
 		open();
