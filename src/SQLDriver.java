@@ -10,15 +10,19 @@ public class SQLDriver {
 	public static Vector<Vector<String>> curTableData = new Vector<Vector<String>>();
 	
 	
-	public static ResultSet Query(String stmtString){
+	public static boolean Query(String stmtString){
 		try{
 			Statement stmt = server.createStatement();
-			ResultSet result = stmt.executeQuery(stmtString);
+			curTableRS =  stmt.executeQuery(stmtString);
 			
-			return result;
+			if (!UpdateCurTable()){
+				return false;
+			}
+			
+			return true;
 		}
 		catch (Exception exc){
-			return null;
+			return false;
 		}
 	}
 	
@@ -42,9 +46,8 @@ public class SQLDriver {
 		}
 	}
 	
-	public static Boolean UpdateCurTable(String table){
-		try{				
-			curTableRS =  Query("SELECT * FROM "+table);
+	public static boolean UpdateCurTable(){
+		try{			
 			ResultSetMetaData rsMeta = curTableRS.getMetaData();
 			
 			curTableCols.clear();			
